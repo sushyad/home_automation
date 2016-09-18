@@ -1,0 +1,886 @@
+[
+    {
+        "id": "38d7015d.8ed5fe",
+        "type": "tab",
+        "label": "Notifications"
+    },
+    {
+        "id": "2b59a6e0.b963da",
+        "type": "subflow",
+        "name": "Configuration Check",
+        "info": "",
+        "in": [
+            {
+                "x": 432,
+                "y": 291,
+                "wires": [
+                    {
+                        "id": "7d35339b.385dfc"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 989,
+                "y": 289,
+                "wires": [
+                    {
+                        "id": "7d35339b.385dfc",
+                        "port": 1
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "d7d8dde8.43aa8",
+        "type": "subflow",
+        "name": "Raise Volume",
+        "info": "",
+        "in": [
+            {
+                "x": 210,
+                "y": 375,
+                "wires": [
+                    {
+                        "id": "71dd7d67.00e0b4"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 1602,
+                "y": 364,
+                "wires": [
+                    {
+                        "id": "491aaada.05b3c4",
+                        "port": 0
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "4a2bf9f9.358f68",
+        "type": "subflow",
+        "name": "Fade Volume",
+        "info": "",
+        "in": [
+            {
+                "x": 128,
+                "y": 385,
+                "wires": [
+                    {
+                        "id": "567ba8f.bcd5c58"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 1600,
+                "y": 265,
+                "wires": [
+                    {
+                        "id": "c950576d.8bd7b8",
+                        "port": 0
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "dd707e86.393e7",
+        "type": "subflow",
+        "name": "Configuration Check (2)",
+        "info": "",
+        "in": [
+            {
+                "x": 432,
+                "y": 291,
+                "wires": [
+                    {
+                        "id": "6806c51a.031aac"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 989,
+                "y": 289,
+                "wires": [
+                    {
+                        "id": "6806c51a.031aac",
+                        "port": 1
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "49cef18e.db4d6",
+        "type": "mqtt-broker",
+        "z": "38d7015d.8ed5fe",
+        "broker": "192.168.0.3",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": ""
+    },
+    {
+        "id": "ad58ba10.dbc778",
+        "type": "mqtt-broker",
+        "z": "d7d8dde8.43aa8",
+        "broker": "192.168.0.3",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": ""
+    },
+    {
+        "id": "9fa1a534.14b398",
+        "type": "mqtt-broker",
+        "z": "4a2bf9f9.358f68",
+        "broker": "192.168.0.3",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": ""
+    },
+    {
+        "id": "7d35339b.385dfc",
+        "type": "switch",
+        "z": "2b59a6e0.b963da",
+        "name": "Is configuration loaded?",
+        "property": "config",
+        "propertyType": "global",
+        "rules": [
+            {
+                "t": "null"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "outputs": 2,
+        "x": 708,
+        "y": 294,
+        "wires": [
+            [
+                "781e3dad.49ee64"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "781e3dad.49ee64",
+        "type": "delay",
+        "z": "2b59a6e0.b963da",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "100",
+        "timeoutUnits": "milliseconds",
+        "rate": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 698,
+        "y": 470,
+        "wires": [
+            [
+                "7d35339b.385dfc"
+            ]
+        ]
+    },
+    {
+        "id": "491aaada.05b3c4",
+        "type": "switch",
+        "z": "d7d8dde8.43aa8",
+        "name": "Is target volume reached?",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gte",
+                "v": "oldVolume",
+                "vt": "msg"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "outputs": 2,
+        "x": 895,
+        "y": 611,
+        "wires": [
+            [],
+            [
+                "f7cd5226.481f5"
+            ]
+        ]
+    },
+    {
+        "id": "f7cd5226.481f5",
+        "type": "function",
+        "z": "d7d8dde8.43aa8",
+        "name": "Change Volume",
+        "func": "msg.payload = Math.min(msg.payload + global.get('config').volumeFadeStep, msg.oldVolume);\n\nmsg.topic = 'wsn/' + global.get('config').volumeSensorName + '/commandIn';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1176,
+        "y": 619,
+        "wires": [
+            [
+                "9f800a1e.c4b388",
+                "cbf6892d.49c258"
+            ]
+        ]
+    },
+    {
+        "id": "9f800a1e.c4b388",
+        "type": "mqtt out",
+        "z": "d7d8dde8.43aa8",
+        "name": "Control  playback",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "broker": "ad58ba10.dbc778",
+        "x": 1437.8333740234375,
+        "y": 566,
+        "wires": []
+    },
+    {
+        "id": "cbf6892d.49c258",
+        "type": "delay",
+        "z": "d7d8dde8.43aa8",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "100",
+        "timeoutUnits": "milliseconds",
+        "rate": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 883,
+        "y": 754,
+        "wires": [
+            [
+                "491aaada.05b3c4"
+            ]
+        ]
+    },
+    {
+        "id": "4e2df1c1.2206c",
+        "type": "debug",
+        "z": "d7d8dde8.43aa8",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "true",
+        "x": 1349,
+        "y": 785,
+        "wires": []
+    },
+    {
+        "id": "71dd7d67.00e0b4",
+        "type": "function",
+        "z": "d7d8dde8.43aa8",
+        "name": "Low Volume",
+        "func": "msg.payload = global.get('config').volumeLevelLow;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 466,
+        "y": 545,
+        "wires": [
+            [
+                "491aaada.05b3c4"
+            ]
+        ]
+    },
+    {
+        "id": "c950576d.8bd7b8",
+        "type": "switch",
+        "z": "4a2bf9f9.358f68",
+        "name": "Is target volume reached?",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "lte",
+                "v": "config.volumeLevelLow",
+                "vt": "global"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "outputs": 2,
+        "x": 849,
+        "y": 558,
+        "wires": [
+            [],
+            [
+                "8536cbd2.4b09a8"
+            ]
+        ]
+    },
+    {
+        "id": "8536cbd2.4b09a8",
+        "type": "function",
+        "z": "4a2bf9f9.358f68",
+        "name": "Change Volume",
+        "func": "msg.payload = Math.max(msg.payload - global.get('config').volumeFadeStep, global.get('config').volumeLevelLow);\n\nmsg.topic = 'wsn/' + global.get('config').volumeSensorName + '/commandIn';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1130,
+        "y": 566,
+        "wires": [
+            [
+                "794cd83.6cb0f28",
+                "c84dff89.ef8ea",
+                "389ee40a.af336c"
+            ]
+        ]
+    },
+    {
+        "id": "794cd83.6cb0f28",
+        "type": "mqtt out",
+        "z": "4a2bf9f9.358f68",
+        "name": "Control  playback",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "broker": "9fa1a534.14b398",
+        "x": 1391.8333740234375,
+        "y": 513,
+        "wires": []
+    },
+    {
+        "id": "c84dff89.ef8ea",
+        "type": "delay",
+        "z": "4a2bf9f9.358f68",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "100",
+        "timeoutUnits": "milliseconds",
+        "rate": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 837,
+        "y": 701,
+        "wires": [
+            [
+                "c950576d.8bd7b8"
+            ]
+        ]
+    },
+    {
+        "id": "567ba8f.bcd5c58",
+        "type": "function",
+        "z": "4a2bf9f9.358f68",
+        "name": "Read Player Volume",
+        "func": "var status = global.get('status');\nmsg.payload = '';\nif (status) {\n    msg.payload = status.volume;\n    if (!msg.oldVolume) {\n        msg.oldVolume = status.volume;\n    }\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 458,
+        "y": 457,
+        "wires": [
+            [
+                "e84479.05188b88"
+            ]
+        ]
+    },
+    {
+        "id": "e84479.05188b88",
+        "type": "switch",
+        "z": "4a2bf9f9.358f68",
+        "name": "Is player volume available?",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nnull"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 2,
+        "x": 478,
+        "y": 563,
+        "wires": [
+            [
+                "c950576d.8bd7b8"
+            ],
+            [
+                "4574b363.e8933c"
+            ]
+        ]
+    },
+    {
+        "id": "4574b363.e8933c",
+        "type": "delay",
+        "z": "4a2bf9f9.358f68",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "200",
+        "timeoutUnits": "milliseconds",
+        "rate": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 450,
+        "y": 697,
+        "wires": [
+            [
+                "e84479.05188b88"
+            ]
+        ]
+    },
+    {
+        "id": "389ee40a.af336c",
+        "type": "debug",
+        "z": "4a2bf9f9.358f68",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "true",
+        "x": 1303,
+        "y": 732,
+        "wires": []
+    },
+    {
+        "id": "6806c51a.031aac",
+        "type": "switch",
+        "z": "dd707e86.393e7",
+        "name": "Is configuration loaded?",
+        "property": "config",
+        "propertyType": "global",
+        "rules": [
+            {
+                "t": "null"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "outputs": 2,
+        "x": 708,
+        "y": 294,
+        "wires": [
+            [
+                "f7e7a282.5d9d1"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "f7e7a282.5d9d1",
+        "type": "delay",
+        "z": "dd707e86.393e7",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "100",
+        "timeoutUnits": "milliseconds",
+        "rate": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 698,
+        "y": 470,
+        "wires": [
+            [
+                "6806c51a.031aac"
+            ]
+        ]
+    },
+    {
+        "id": "ee09993b.d3f4a8",
+        "type": "mqtt in",
+        "z": "38d7015d.8ed5fe",
+        "name": "",
+        "topic": "wsn/+/status",
+        "qos": "2",
+        "broker": "49cef18e.db4d6",
+        "x": 171,
+        "y": 267,
+        "wires": [
+            [
+                "7c467bab.6803a4"
+            ]
+        ]
+    },
+    {
+        "id": "df5b456.9c965b8",
+        "type": "exec",
+        "z": "38d7015d.8ed5fe",
+        "command": "/home/pi/bin/speak.sh ",
+        "addpay": true,
+        "append": "",
+        "useSpawn": "",
+        "timer": "",
+        "name": "Speak",
+        "x": 1204.166748046875,
+        "y": 670,
+        "wires": [
+            [
+                "3290202c.adfa6",
+                "3afdba20.c77356"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "c7ec96f8.7e0248",
+        "type": "function",
+        "z": "38d7015d.8ed5fe",
+        "name": "Transform message",
+        "func": "msg.message = \"'\" + msg.payload.toLowerCase() + \"'\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 512.1666870117188,
+        "y": 670,
+        "wires": [
+            [
+                "377ccc8f.553c14"
+            ]
+        ]
+    },
+    {
+        "id": "7edfdb7d.e41274",
+        "type": "function",
+        "z": "38d7015d.8ed5fe",
+        "name": "Extract sensor name",
+        "func": "var queue = msg.topic;\nmsg.sensor = queue.split('/')[1];\nmsg.debugLog = msg.sensor + \": \" + msg.payload;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 795.1666870117188,
+        "y": 262,
+        "wires": [
+            [
+                "8467fcc5.bea4a"
+            ]
+        ]
+    },
+    {
+        "id": "9d16ec0e.7801d",
+        "type": "debug",
+        "z": "38d7015d.8ed5fe",
+        "name": "",
+        "active": false,
+        "console": "false",
+        "complete": "debugLog",
+        "x": 1578.1666870117188,
+        "y": 235,
+        "wires": []
+    },
+    {
+        "id": "8467fcc5.bea4a",
+        "type": "function",
+        "z": "38d7015d.8ed5fe",
+        "name": "Update Status",
+        "func": "var status = global.get('status');\nvar config = global.get('config');\n\nif (msg.sensor == config.playbackSensorName) {\n    status.playback = msg.payload;\n} else if (msg.sensor == config.volumeSensorName) {\n    status.volume = msg.payload;\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1282.1666564941406,
+        "y": 233,
+        "wires": [
+            [
+                "9d16ec0e.7801d",
+                "5d8bf1b8.6500e"
+            ]
+        ]
+    },
+    {
+        "id": "d4b97a2e.d6a888",
+        "type": "http request",
+        "z": "38d7015d.8ed5fe",
+        "name": "Get Player Volume",
+        "method": "GET",
+        "ret": "obj",
+        "url": "",
+        "tls": "",
+        "x": 1279.1666870117188,
+        "y": 555,
+        "wires": [
+            [
+                "e30be12a.88a39"
+            ]
+        ]
+    },
+    {
+        "id": "3cc9e5eb.ac3a2a",
+        "type": "function",
+        "z": "38d7015d.8ed5fe",
+        "name": "Request JSON response",
+        "func": "var config = global.get('config');\n\nmsg.url = config.sensorStateRESTUrl + config.volumeSensorName;\n\nmsg.headers = {\n    Accept: 'application/json'\n};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 910.1666870117188,
+        "y": 541,
+        "wires": [
+            [
+                "d4b97a2e.d6a888",
+                "3996e1e3.1f18ae"
+            ]
+        ]
+    },
+    {
+        "id": "e30be12a.88a39",
+        "type": "function",
+        "z": "38d7015d.8ed5fe",
+        "name": "Extract Volume",
+        "func": "msg.payload = msg.payload.state;\nmsg.sensor = global.get('config').volumeSensorName;\nmsg.debugLog = msg.sensor + \": \" + msg.payload;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1335.1666564941406,
+        "y": 411,
+        "wires": [
+            [
+                "8467fcc5.bea4a"
+            ]
+        ]
+    },
+    {
+        "id": "f292f7f1.3f0678",
+        "type": "function",
+        "z": "38d7015d.8ed5fe",
+        "name": "Generate Switch Message",
+        "func": "if (msg.sensor == 'Switch2') {\n    msg.payload = 'Switch has turned ' + msg.payload;\n}\nreturn msg;",
+        "outputs": "1",
+        "noerr": 0,
+        "x": 236.00003051757812,
+        "y": 669.3333740234375,
+        "wires": [
+            [
+                "c7ec96f8.7e0248"
+            ]
+        ]
+    },
+    {
+        "id": "5d8bf1b8.6500e",
+        "type": "switch",
+        "z": "38d7015d.8ed5fe",
+        "name": "Alert Router",
+        "property": "sensor",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "regex",
+                "v": "^Switch.*",
+                "vt": "str",
+                "case": true
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 2,
+        "x": 229,
+        "y": 457.3333740234375,
+        "wires": [
+            [
+                "3cc9e5eb.ac3a2a",
+                "f292f7f1.3f0678"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "3996e1e3.1f18ae",
+        "type": "debug",
+        "z": "38d7015d.8ed5fe",
+        "name": "",
+        "active": false,
+        "console": "false",
+        "complete": "true",
+        "x": 1561,
+        "y": 371,
+        "wires": []
+    },
+    {
+        "id": "54970cf1.0e07d4",
+        "type": "inject",
+        "z": "38d7015d.8ed5fe",
+        "name": "Load configuration at startup",
+        "topic": "",
+        "payload": "{}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "x": 212,
+        "y": 105,
+        "wires": [
+            [
+                "130dc1fb.25db6e"
+            ]
+        ]
+    },
+    {
+        "id": "130dc1fb.25db6e",
+        "type": "file in",
+        "z": "38d7015d.8ed5fe",
+        "name": "Read config.json",
+        "filename": "/home/pi/.node-red/config.json",
+        "format": "utf8",
+        "x": 500,
+        "y": 104,
+        "wires": [
+            [
+                "3fe3d899.5dd9f8"
+            ]
+        ]
+    },
+    {
+        "id": "1d0952ca.f3c3cd",
+        "type": "function",
+        "z": "38d7015d.8ed5fe",
+        "name": "Set configuration",
+        "func": "global.set('config', msg.payload);\n\nif (!global.get('status')) {\n    global.set('status', {});\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 952,
+        "y": 102,
+        "wires": [
+            [
+                "d052d7a4.649a08"
+            ]
+        ]
+    },
+    {
+        "id": "3fe3d899.5dd9f8",
+        "type": "json",
+        "z": "38d7015d.8ed5fe",
+        "name": "",
+        "x": 726,
+        "y": 103,
+        "wires": [
+            [
+                "1d0952ca.f3c3cd"
+            ]
+        ]
+    },
+    {
+        "id": "d052d7a4.649a08",
+        "type": "debug",
+        "z": "38d7015d.8ed5fe",
+        "name": "",
+        "active": false,
+        "console": "false",
+        "complete": "false",
+        "x": 1243,
+        "y": 102,
+        "wires": []
+    },
+    {
+        "id": "7c467bab.6803a4",
+        "type": "subflow:dd707e86.393e7",
+        "z": "38d7015d.8ed5fe",
+        "name": "",
+        "x": 441,
+        "y": 268,
+        "wires": [
+            [
+                "7edfdb7d.e41274"
+            ]
+        ]
+    },
+    {
+        "id": "377ccc8f.553c14",
+        "type": "subflow:4a2bf9f9.358f68",
+        "z": "38d7015d.8ed5fe",
+        "name": "",
+        "x": 756,
+        "y": 670,
+        "wires": [
+            [
+                "4e9a14a1.b97ccc"
+            ]
+        ]
+    },
+    {
+        "id": "4e9a14a1.b97ccc",
+        "type": "function",
+        "z": "38d7015d.8ed5fe",
+        "name": "Restore message",
+        "func": "msg.payload = msg.message;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 988,
+        "y": 670,
+        "wires": [
+            [
+                "df5b456.9c965b8"
+            ]
+        ]
+    },
+    {
+        "id": "3290202c.adfa6",
+        "type": "subflow:d7d8dde8.43aa8",
+        "z": "38d7015d.8ed5fe",
+        "name": "",
+        "x": 1427,
+        "y": 658,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3afdba20.c77356",
+        "type": "debug",
+        "z": "38d7015d.8ed5fe",
+        "name": "",
+        "active": false,
+        "console": "false",
+        "complete": "true",
+        "x": 1757,
+        "y": 798,
+        "wires": []
+    }
+]

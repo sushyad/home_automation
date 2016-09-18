@@ -1,0 +1,9 @@
+{
+    "location": "LivingRoom",
+    "volumeSensorName": "MusicVolumeLivingRoom",
+    "playbackSensorName": "MusicPlayLivingRoom",
+    "sensorStateRESTUrl": "http://192.168.0.3:9080/rest/items/",
+    "volumeLevelLow": 30,
+    "volumeFadeStep": 3
+}
+
