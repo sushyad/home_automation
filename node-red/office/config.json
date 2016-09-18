@@ -1,0 +1,9 @@
+{
+    "location": "Office",
+    "volumeSensorName": "MusicVolumeOffice",
+    "playbackSensorName": "MusicPlayOffice",
+    "sensorStateRESTUrl": "http://192.168.0.3:9080/rest/items/",
+    "volumeLevelLow": 30,
+    "volumeFadeStep": 3
+}
+
